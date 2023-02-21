@@ -60,5 +60,7 @@ namespace BizHawk.Client.Common
 				Axes[axisID] = value;
 			}
 		}
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

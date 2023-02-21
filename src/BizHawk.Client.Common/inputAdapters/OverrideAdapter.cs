@@ -62,5 +62,8 @@ namespace BizHawk.Client.Common
 			_axisOverrides.Clear();
 			_inverses.Clear();
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

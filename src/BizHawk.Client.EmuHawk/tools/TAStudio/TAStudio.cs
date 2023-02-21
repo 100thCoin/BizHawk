@@ -353,6 +353,15 @@ namespace BizHawk.Client.EmuHawk
 				Rotatable = true
 			});
 
+			TasView.AllColumns.Add(new RollColumn
+			{
+				Name = "HotSwap",
+				Text = "Hot Swap File Path",
+				UnscaledWidth = 148,
+				Type = ColumnType.Text,
+				Rotatable = true
+			});
+
 			var columnNames = MovieSession.Movie
 				.LogGeneratorInstance(MovieSession.MovieController)
 				.Map();

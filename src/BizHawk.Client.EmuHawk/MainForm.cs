@@ -3149,7 +3149,10 @@ namespace BizHawk.Client.EmuHawk
 				}
 
 				MovieSession.HandleFrameBefore();
-
+				if (MovieSession.MovieController.HotSwapFilePath != "")
+				{
+					InputManager.ControllerOutput.HotSwapFilePath = MovieSession.MovieController.HotSwapFilePath;
+				}
 				RA?.OnFrameAdvance();
 
 				if (Config.AutosaveSaveRAM)

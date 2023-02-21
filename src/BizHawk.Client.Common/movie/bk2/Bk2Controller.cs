@@ -64,6 +64,8 @@ namespace BizHawk.Client.Common
 			{
 				_myAxisControls[name] = source.AxisValue(name);
 			}
+
+			HotSwapFilePath = source.HotSwapFilePath;
 		}
 
 		public void SetFromSticky(IStickyAdapter controller)
@@ -101,6 +103,16 @@ namespace BizHawk.Client.Common
 						iterator += commaIndex + 1;
 					}
 				}
+				int ind = trimmed.IndexOf("\"");
+				if (ind != -1)
+				{
+					trimmed = trimmed.Substring(ind + 1, trimmed.Length - ind - 2);
+					HotSwapFilePath = trimmed;
+				}
+				else
+				{
+					HotSwapFilePath = "";
+				}
 			}
 		}
 
@@ -133,5 +145,8 @@ namespace BizHawk.Client.Common
 			protected override IReadOnlyList<IReadOnlyList<string>> GenOrderedControls()
 				=> ControlsFromLog is not null && ControlsFromLog.Count is not 0 ? ControlsFromLog : base.GenOrderedControls();
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

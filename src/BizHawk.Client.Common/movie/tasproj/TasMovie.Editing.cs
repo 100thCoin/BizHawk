@@ -299,6 +299,18 @@ namespace BizHawk.Client.Common
 			}
 		}
 
+		public void SetHotSwapFilePath(int frame, string path)
+		{
+			var adapter = GetInputState(frame);
+			adapter.HotSwapFilePath = path;
+
+			var lg = LogGeneratorInstance(adapter);
+			Log[frame] = lg.GenerateLogEntry();
+			Changes = true;
+			InvalidateAfter(frame);
+
+		}
+
 		public void ToggleBoolState(int frame, string buttonName)
 		{
 			if (frame >= Log.Count) // Insert blank frames up to this point

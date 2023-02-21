@@ -58,5 +58,8 @@ namespace BizHawk.Client.Common
 				_pressed.Add(button);
 			}
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

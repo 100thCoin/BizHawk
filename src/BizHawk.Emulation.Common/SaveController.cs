@@ -104,5 +104,8 @@ namespace BizHawk.Emulation.Common
 		public IReadOnlyCollection<(string Name, int Strength)> GetHapticsSnapshot() => Array.Empty<(string, int)>();
 
 		public void SetHapticChannelStrength(string name, int strength) {}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

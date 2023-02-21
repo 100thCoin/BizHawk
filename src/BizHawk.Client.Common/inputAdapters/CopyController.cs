@@ -24,5 +24,8 @@ namespace BizHawk.Client.Common
 		public IController Source { get; set; }
 
 		private IController Curr => Source ?? NullController.Instance;
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

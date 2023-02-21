@@ -55,5 +55,8 @@ namespace BizHawk.Client.Common
 		public IReadOnlyCollection<(string Name, int Strength)> GetHapticsSnapshot() => Source.GetHapticsSnapshot();
 
 		public void SetHapticChannelStrength(string name, int strength) => Source.SetHapticChannelStrength(name, strength);
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }
