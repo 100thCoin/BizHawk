@@ -1,6 +1,7 @@
 // NOTE: to match Mesen timings, set idleSynch to true at power on, and set start_up_offset to -3
 
 using System;
+using System.IO;
 using System.Linq;
 
 using BizHawk.Common;
@@ -177,9 +178,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			};
 
 			ppu = new PPU(this);
-			ram = new byte[0x800];
-			CIRAM = new byte[0x800];
-
+			if (!hotSwapping)
+			{
+				ram = new byte[0x800];
+				CIRAM = new byte[0x800];
+			}
 			// don't replace the magicSoundProvider on reset, as it's not needed
 			// if (magicSoundProvider != null) magicSoundProvider.Dispose();
 
@@ -226,31 +229,32 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 			// apu has some specific power up bahaviour that we will emulate here
 			apu.NESHardReset();
-
-			if (SyncSettings.InitialWRamStatePattern != null && SyncSettings.InitialWRamStatePattern.Any())
+			if (!hotSwapping)
 			{
-				for (int i = 0; i < 0x800; i++)
+				if (SyncSettings.InitialWRamStatePattern != null && SyncSettings.InitialWRamStatePattern.Any())
 				{
-					ram[i] = SyncSettings.InitialWRamStatePattern[i % SyncSettings.InitialWRamStatePattern.Count];
-				}
-			}
-			else
-			{
-				// check fceux's PowerNES and FCEU_MemoryRand function for more information:
-				// relevant games: Cybernoid; Minna no Taabou no Nakayoshi Daisakusen; Huang Di; and maybe mechanized attack
-				for (int i = 0; i < 0x800; i++)
-				{
-					if ((i & 4) != 0)
+					for (int i = 0; i < 0x800; i++)
 					{
-						ram[i] = 0xFF;
-					}
-					else
-					{
-						ram[i] = 0x00;
+						ram[i] = SyncSettings.InitialWRamStatePattern[i % SyncSettings.InitialWRamStatePattern.Count];
 					}
 				}
+				else
+				{
+					// check fceux's PowerNES and FCEU_MemoryRand function for more information:
+					// relevant games: Cybernoid; Minna no Taabou no Nakayoshi Daisakusen; Huang Di; and maybe mechanized attack
+					for (int i = 0; i < 0x800; i++)
+					{
+						if ((i & 4) != 0)
+						{
+							ram[i] = 0xFF;
+						}
+						else
+						{
+							ram[i] = 0x00;
+						}
+					}
+				}
 			}
-
 			SetupMemoryDomains();
 
 			// some boards cannot have specific values in RAM upon initialization
@@ -279,6 +283,25 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			}
 		}
 
+		public void HotSwap(string filePath)
+		{
+			// swapping cartridges without clearing memory
+
+			// 
+
+			var file = new HawkFile(filePath, false, false);
+			if(!file.Exists)
+			{
+				// uh oh!
+			}
+			
+			byte[] rom = file.ReadAllBytes();
+
+			hotSwapping = true;
+			Init(null, rom, null);
+			hotSwapping = false;
+		}
+
 		public long CycleCount => ppu.TotalCycles;
 		public double ClockRate { get; private set; }
 
@@ -289,6 +312,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		private bool resetSignal;
 		private bool hardResetSignal;
+		public string hotSwapFilePath;
+
+		private bool hotSwapping;
 
 		public bool FrameAdvance(IController controller, bool render, bool rendersound)
 		{
@@ -302,6 +328,13 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			lagged = true;
 			if (resetSignal)
 			{
+				hotSwapFilePath = controller.HotSwapFilePath;
+				if (hotSwapFilePath != null && hotSwapFilePath != "")
+				{
+					//string temporaryPathAssignment = "hawkSwap\\roms\\Tennis.nes"; //TODO REMOVE THIS LINE
+					HotSwap(hotSwapFilePath);
+				}
+
 				Board.NesSoftReset();
 				cpu.NESSoftReset();
 				apu.NESSoftReset();

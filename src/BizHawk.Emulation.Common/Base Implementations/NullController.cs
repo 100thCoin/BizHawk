@@ -25,5 +25,7 @@ namespace BizHawk.Emulation.Common
 		public void SetHapticChannelStrength(string name, int strength) {}
 
 		public static readonly NullController Instance = new NullController();
+
+		public string HotSwapFilePath { get; set; }
 	}
 }

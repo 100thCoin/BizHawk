@@ -30,6 +30,8 @@ namespace BizHawk.Client.Common
 
 		public IController Source { get; set; }
 		internal IController SourceAnd { get; set; }
+		public string HotSwapFilePath { get; set; }
+
 	}
 
 	public class XorAdapter : IInputAdapter
@@ -58,6 +60,8 @@ namespace BizHawk.Client.Common
 
 		public IController Source { get; set; }
 		internal IController SourceXor { get; set; }
+		public string HotSwapFilePath { get; set; }
+
 	}
 
 	public class ORAdapter : IInputAdapter
@@ -82,5 +86,8 @@ namespace BizHawk.Client.Common
 
 		public IController Source { get; set; }
 		internal IController SourceOr { get; set; }
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

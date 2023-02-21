@@ -111,6 +111,9 @@ namespace BizHawk.Client.Common
 
 			_justPressed = buttons;
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 
 	public class AutoFireStickyXorAdapter : IStickyAdapter, IInputAdapter
@@ -228,5 +231,8 @@ namespace BizHawk.Client.Common
 
 			_justPressed = buttons;
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

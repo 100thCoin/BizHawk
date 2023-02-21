@@ -83,6 +83,11 @@ namespace BizHawk.Client.Common
 				sb.Append('|');
 			}
 
+			if(_source.HotSwapFilePath != null && _source.HotSwapFilePath != "")
+			{
+				sb.Append("\"" + _source.HotSwapFilePath + "\"");
+			}
+
 			return sb.ToString();
 		}
 	}

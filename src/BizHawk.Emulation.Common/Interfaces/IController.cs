@@ -30,5 +30,10 @@ namespace BizHawk.Emulation.Common
 		/// <param name="name">haptic channel name e.g. "P1 Mono", "P2 Left"</param>
 		/// <param name="strength">0..<see cref="int.MaxValue"/></param>
 		void SetHapticChannelStrength(string name, int strength);
+
+		/// <summary>
+		/// The file path of the rom you with to load
+		/// </summary>
+		string HotSwapFilePath { get; set; }
 	}
 }

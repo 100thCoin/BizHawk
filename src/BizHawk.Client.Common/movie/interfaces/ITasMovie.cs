@@ -55,5 +55,6 @@ namespace BizHawk.Client.Common
 		void LoadBranch(TasBranch branch);
 
 		void CopyVerificationLog(IEnumerable<string> log);
+		void SetHotSwapFilePath(int frame, string path);
 	}
 }

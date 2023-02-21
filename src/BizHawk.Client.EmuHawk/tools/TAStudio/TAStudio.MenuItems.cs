@@ -1431,5 +1431,35 @@ namespace BizHawk.Client.EmuHawk
 		{
 			System.Diagnostics.Process.Start("https://tasvideos.org/Forum/Topics/13505");
 		}
+
+		/// <summary>
+		/// Load the movie with the given filename within TAStudio.
+		/// </summary>
+		public string LoadHotSwapPath()
+		{
+			var result = this.ShowFileOpenDialog(
+				//filter: MoviesFSFilterSet,	//TODO add a filter
+				initDir: Config!.PathEntries.RomAbsolutePath());
+			if(result == null)
+			{
+				return "";
+			}
+			if (result.EndsWith(".nes")) // find extension of current ROM
+			{
+				if (result.StartsWith(AppContext.BaseDirectory))
+				{
+					result = result.Remove(0,AppContext.BaseDirectory.Length);
+				}
+
+				return result; 
+			}
+
+			DialogController.ShowMessageBox(
+				caption: "ROM load error",
+				icon: EMsgBoxIcon.Error,
+				text: "This is not a ROM of the same type as the current ROM!");
+			return "";
+		}
+
 	}
 }

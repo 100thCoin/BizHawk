@@ -110,5 +110,6 @@ namespace BizHawk.Client.Common
 			.Where(kvp => kvp.Value)
 			.Select(kvp => kvp.Key)
 			.ToList();
+		public string HotSwapFilePath { get; set; }
 	}
 }

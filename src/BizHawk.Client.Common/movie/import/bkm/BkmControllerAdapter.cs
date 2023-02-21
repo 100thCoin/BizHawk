@@ -592,5 +592,8 @@ namespace BizHawk.Client.Common
 
 			public bool this[int c] => !string.IsNullOrEmpty(_mnemonic) && _mnemonic[c] != '.';
 		}
+
+		public string HotSwapFilePath { get; set; }
+
 	}
 }

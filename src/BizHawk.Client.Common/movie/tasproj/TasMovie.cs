@@ -159,8 +159,8 @@ namespace BizHawk.Client.Common
 			if (_displayCache.Frame != frame)
 			{
 				_displayCache = (frame, GetInputState(frame));
-			}
-			
+			}			
+
 			return CreateDisplayValueForButton(_displayCache.Controller, buttonName);
 		}
 
@@ -176,6 +176,16 @@ namespace BizHawk.Client.Common
 			if (adapter.Definition.Axes.ContainsKey(buttonName))
 			{
 				return adapter.AxisValue(buttonName).ToString();
+			}
+
+			if(buttonName == "HotSwap")
+			{
+				if(adapter.IsPressed("Reset"))
+				{
+
+					return " \"" + adapter.HotSwapFilePath + "\"";
+				}
+				return "";
 			}
 
 			return "!";

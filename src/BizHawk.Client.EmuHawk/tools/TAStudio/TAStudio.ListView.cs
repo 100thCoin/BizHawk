@@ -611,6 +611,16 @@ namespace BizHawk.Client.EmuHawk
 						_selectionDragState = TasView.IsRowSelected(frame);
 					}
 				}
+				else if (TasView.CurrentCell.Column.Name == "HotSwap")
+				{
+
+					if (CurrentTasMovie.BoolIsPressed(frame, "Reset"))
+					{ 
+						string FilePath = LoadHotSwapPath();
+						CurrentTasMovie.SetHotSwapFilePath(frame, FilePath);
+						RefreshDialog();
+					}	
+				}
 				else if (TasView.CurrentCell.Column.Type != ColumnType.Text) // User changed input
 				{
 					_playbackInterrupted = !MainForm.EmulatorPaused;
