@@ -4,8 +4,9 @@ using System;
 
 namespace BizHawk.Emulation.Common
 {
-	public interface IHotSwap : IEmulatorService, IDisposable
+	public interface IHotSwap : IEmulatorService
 	{
+
 		/// <summary>
 		/// Swaps ROMs without clearing ram
 		/// </summary>

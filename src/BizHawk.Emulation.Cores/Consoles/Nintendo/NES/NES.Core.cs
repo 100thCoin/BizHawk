@@ -12,7 +12,7 @@ using BizHawk.Emulation.Cores.Components.M6502;
 
 namespace BizHawk.Emulation.Cores.Nintendo.NES
 {
-	public partial class NES : IEmulator, ISoundProvider, IHotSwap/*, ICycleTiming*/
+	public partial class NES : IEmulator, ISoundProvider/*, ICycleTiming*/
 	{
 		internal static class RomChecksums
 		{
@@ -287,8 +287,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		{
 			// swapping cartridges without clearing memory
 
-			// 
-
 			var file = new HawkFile(filePath, false, false);
 			if(!file.Exists)
 			{
@@ -312,8 +310,6 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 
 		private bool resetSignal;
 		private bool hardResetSignal;
-		public string hotSwapFilePath;
-
 		private bool hotSwapping;
 
 		public bool FrameAdvance(IController controller, bool render, bool rendersound)
@@ -328,11 +324,10 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			lagged = true;
 			if (resetSignal)
 			{
-				hotSwapFilePath = controller.HotSwapFilePath;
-				if (hotSwapFilePath != null && hotSwapFilePath != "")
+				if (controller.HotSwapFilePath != null && controller.HotSwapFilePath != "")
 				{
 					//string temporaryPathAssignment = "hawkSwap\\roms\\Tennis.nes"; //TODO REMOVE THIS LINE
-					HotSwap(hotSwapFilePath);
+					HotSwap(controller.HotSwapFilePath);
 				}
 
 				Board.NesSoftReset();

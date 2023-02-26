@@ -1,4 +1,5 @@
-﻿using BizHawk.Emulation.Common;
+﻿using BizHawk.Common;
+using BizHawk.Emulation.Common;
 using BizHawk.Emulation.Cores.Nintendo.NES;
 
 namespace BizHawk.Emulation.Cores.Nintendo.SubNESHawk
@@ -6,7 +7,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.SubNESHawk
 	[Core(CoreNames.SubNesHawk, "")]
 	[ServiceNotApplicable(new[] { typeof(IDriveLight) })]
 	public partial class SubNESHawk : IEmulator, IStatable, IInputPollable,
-		ISettable<NES.NES.NESSettings, NES.NES.NESSyncSettings>, ICycleTiming
+		ISettable<NES.NES.NESSettings, NES.NES.NESSyncSettings>, ICycleTiming, IHotSwap
 	{
 		[CoreConstructor(VSystemID.Raw.NES, Priority = CorePriority.SuperLow)]
 		public SubNESHawk(CoreComm comm, GameInfo game, byte[] rom, /*string gameDbFn,*/ NES.NES.NESSettings settings, NES.NES.NESSyncSettings syncSettings)
@@ -54,13 +55,18 @@ namespace BizHawk.Emulation.Cores.Nintendo.SubNESHawk
 		public void HardReset() => _nesCore.HardReset();
 
 		private void SoftReset()
-		{
+		{			
 			_nesCore.Board.NesSoftReset();
 			_nesCore.cpu.NESSoftReset();
 			_nesCore.apu.NESSoftReset();
 			_nesCore.ppu.NESSoftReset();
 			current_cycle = 0;
 			_nesCore.cpu.ext_ppu_cycle = current_cycle;
+		}
+
+		public void HotSwap(string filePath)
+		{
+			_nesCore.HotSwap(filePath);
 		}
 
 		private int _frame;

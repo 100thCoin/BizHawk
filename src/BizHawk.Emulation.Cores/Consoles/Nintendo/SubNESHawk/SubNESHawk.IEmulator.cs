@@ -77,6 +77,11 @@ namespace BizHawk.Emulation.Cores.Nintendo.SubNESHawk
 			{
 				if (reset_frame && (current_cycle == reset_cycle_int))
 				{
+					if(controller.HotSwapFilePath != null && controller.HotSwapFilePath != "")
+					{
+						_nesCore.HotSwap(controller.HotSwapFilePath);
+					}
+
 					SoftReset();
 					reset_frame = false;
 				}

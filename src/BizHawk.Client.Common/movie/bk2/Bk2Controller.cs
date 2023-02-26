@@ -147,6 +147,5 @@ namespace BizHawk.Client.Common
 		}
 
 		public string HotSwapFilePath { get; set; }
-
 	}
 }

@@ -32,7 +32,7 @@ namespace BizHawk.Emulation.Common
 		void SetHapticChannelStrength(string name, int strength);
 
 		/// <summary>
-		/// The file path of the rom you with to load
+		/// The file path of the rom to load
 		/// </summary>
 		string HotSwapFilePath { get; set; }
 	}
