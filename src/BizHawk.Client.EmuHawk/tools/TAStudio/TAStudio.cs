@@ -352,16 +352,17 @@ namespace BizHawk.Client.EmuHawk
 				Type = ColumnType.Text,
 				Rotatable = true
 			});
-
-			TasView.AllColumns.Add(new RollColumn
+			if (HotSwapper != null)
 			{
-				Name = "HotSwap",
-				Text = "Hot Swap File Path",
-				UnscaledWidth = 148,
-				Type = ColumnType.Text,
-				Rotatable = true
-			});
-
+				TasView.AllColumns.Add(new RollColumn
+				{
+					Name = "HotSwap",
+					Text = "Hot Swap File Path",
+					UnscaledWidth = 148,
+					Type = ColumnType.Text,
+					Rotatable = true
+				});
+			}
 			var columnNames = MovieSession.Movie
 				.LogGeneratorInstance(MovieSession.MovieController)
 				.Map();
@@ -389,6 +390,7 @@ namespace BizHawk.Client.EmuHawk
 					// todo: make a proper user editable list?
 					c.Name == "Power"
 					|| c.Name == "Reset"
+					|| c.Name == "HotSwap"
 					|| c.Name == "Light Sensor"
 					|| c.Name == "Disc Select"
 					|| c.Name == "Disk Index"

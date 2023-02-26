@@ -10,6 +10,6 @@ namespace BizHawk.Emulation.Common
 		/// <summary>
 		/// Swaps ROMs without clearing ram
 		/// </summary>
-		void HotSwap(string FilePath);
+		void HotSwap(string filePath);
 	}
 }
