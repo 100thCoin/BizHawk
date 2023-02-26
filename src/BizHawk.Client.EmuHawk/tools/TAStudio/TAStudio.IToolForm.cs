@@ -19,6 +19,9 @@ namespace BizHawk.Client.EmuHawk
 		[OptionalService]
 		public ISaveRam SaveRamEmulator { get; private set; }
 
+		[OptionalService]
+		public IHotSwap HotSwapper { get; private set; }
+
 		private bool _initializing; // If true, will bypass restart logic, this is necessary since loading projects causes a movie to load which causes a rom to reload causing dialogs to restart
 
 		private int _lastRefresh;

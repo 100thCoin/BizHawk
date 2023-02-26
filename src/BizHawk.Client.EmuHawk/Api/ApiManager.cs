@@ -42,7 +42,8 @@ namespace BizHawk.Client.EmuHawk
 			ToolManager toolManager,
 			Config config,
 			IEmulator emulator,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
 			var avail = new Dictionary<Type, object>
 			{
@@ -55,6 +56,7 @@ namespace BizHawk.Client.EmuHawk
 				[typeof(Config)] = config,
 				[typeof(IEmulator)] = emulator,
 				[typeof(IGameInfo)] = game,
+				[typeof(IHotSwap)] = hotSwap,
 			};
 			return new ApiContainer(_apiTypes.Where(tuple => ServiceInjector.IsAvailable(serviceProvider, tuple.ImplType))
 				.ToDictionary(
@@ -76,10 +78,11 @@ namespace BizHawk.Client.EmuHawk
 			ToolManager toolManager,
 			Config config,
 			IEmulator emulator,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
 			_container?.Dispose();
-			_container = Register(serviceProvider, Console.WriteLine, mainForm, displayManager, inputManager, movieSession, toolManager, config, emulator, game);
+			_container = Register(serviceProvider, Console.WriteLine, mainForm, displayManager, inputManager, movieSession, toolManager, config, emulator, game, hotSwap);
 			return new BasicApiProvider(_container);
 		}
 
@@ -93,10 +96,11 @@ namespace BizHawk.Client.EmuHawk
 			ToolManager toolManager,
 			Config config,
 			IEmulator emulator,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
 			_luaContainer?.Dispose();
-			_luaContainer = Register(serviceProvider, logCallback, mainForm, displayManager, inputManager, movieSession, toolManager, config, emulator, game);
+			_luaContainer = Register(serviceProvider, logCallback, mainForm, displayManager, inputManager, movieSession, toolManager, config, emulator, game, hotSwap);
 			((GuiApi) _luaContainer.Gui).EnableLuaAutolockHack = true;
 			return _luaContainer;
 		}

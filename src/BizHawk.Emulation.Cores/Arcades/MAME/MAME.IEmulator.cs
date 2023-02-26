@@ -64,5 +64,8 @@ namespace BizHawk.Emulation.Cores.Arcades.MAME
 			_exe.Dispose();
 			_disposed = true;
 		}
+		public void HotSwap(string FilePath)
+		{
+		}
 	}
 }

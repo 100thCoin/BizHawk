@@ -26,7 +26,8 @@ namespace BizHawk.Client.EmuHawk
 			InputManager inputManager,
 			Config config,
 			IEmulator emulator,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
 			void EnumerateLuaFunctions(string name, Type type, LuaLibraryBase instance)
 			{
@@ -55,7 +56,7 @@ namespace BizHawk.Client.EmuHawk
 			RegisteredFunctions = registeredFuncList;
 			ScriptList = scriptList;
 			Docs.Clear();
-			_apiContainer = ApiManager.RestartLua(serviceProvider, LogToLuaConsole, _mainForm, _displayManager, _inputManager, _mainForm.MovieSession, _mainForm.Tools, config, emulator, game);
+			_apiContainer = ApiManager.RestartLua(serviceProvider, LogToLuaConsole, _mainForm, _displayManager, _inputManager, _mainForm.MovieSession, _mainForm.Tools, config, emulator, game, hotSwap);
 
 			// Register lua libraries
 			foreach (var lib in Client.Common.ReflectionCache.Types.Concat(EmuHawk.ReflectionCache.Types)
@@ -163,9 +164,10 @@ namespace BizHawk.Client.EmuHawk
 			IEmulatorServiceProvider newServiceProvider,
 			Config config,
 			IEmulator emulator,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
-			_apiContainer = ApiManager.RestartLua(newServiceProvider, LogToLuaConsole, _mainForm, _displayManager, _inputManager, _mainForm.MovieSession, _mainForm.Tools, config, emulator, game);
+			_apiContainer = ApiManager.RestartLua(newServiceProvider, LogToLuaConsole, _mainForm, _displayManager, _inputManager, _mainForm.MovieSession, _mainForm.Tools, config, emulator, game, hotSwap);
 			PathEntries = config.PathEntries;
 			foreach (var lib in Libraries.Values)
 			{

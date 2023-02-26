@@ -64,6 +64,6 @@ namespace BizHawk.Emulation.Common
 		/// <summary>
 		/// Resets the Frame and Lag counters, and any other similar counters a core might implement
 		/// </summary>
-		void ResetCounters();
+		void ResetCounters();		
 	}
 }

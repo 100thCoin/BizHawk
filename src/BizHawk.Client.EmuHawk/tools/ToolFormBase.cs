@@ -25,6 +25,8 @@ namespace BizHawk.Client.EmuHawk
 
 		protected IGameInfo Game { get; private set; }
 
+		protected IHotSwap HotSwap { get; private set; }
+
 		public IDialogController DialogController => MainForm;
 
 		public virtual bool AskSaveChanges() => true;

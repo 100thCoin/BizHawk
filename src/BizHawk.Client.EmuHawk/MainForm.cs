@@ -468,6 +468,8 @@ namespace BizHawk.Client.EmuHawk
 					: null
 			);
 
+			HotSwap = null;
+
 			ExtToolManager = new(
 				Config,
 				() => (Emulator.SystemId, Game.Hash),
@@ -475,7 +477,7 @@ namespace BizHawk.Client.EmuHawk
 					toolPath: toolPath,
 					customFormTypeName: customFormTypeName,
 					skipExtToolWarning: skipExtToolWarning) is not null);
-			Tools = new ToolManager(this, Config, DisplayManager, ExtToolManager, InputManager, Emulator, MovieSession, Game);
+			Tools = new ToolManager(this, Config, DisplayManager, ExtToolManager, InputManager, Emulator, MovieSession, Game, HotSwap);
 
 			// TODO GL - move these event handlers somewhere less obnoxious line in the On* overrides
 			Load += (o, e) =>
@@ -1030,6 +1032,8 @@ namespace BizHawk.Client.EmuHawk
 		public IMovieSession MovieSession { get; }
 
 		public GameInfo Game { get; private set; }
+
+		public IHotSwap HotSwap;
 
 		/// <remarks>don't use this, use <see cref="Sound"/></remarks>
 		private Sound _sound;
@@ -2982,7 +2986,7 @@ namespace BizHawk.Client.EmuHawk
 			LoadGlobalConfigFromFile(iniPath);
 			InitControls(); // rebind hotkeys
 			InputManager.SyncControls(Emulator, MovieSession, Config);
-			Tools.Restart(Config, Emulator, Game);
+			Tools.Restart(Config, Emulator, Game, HotSwap);
 			ExtToolManager.Restart(Config);
 			Sound.Config = Config;
 			DisplayManager.UpdateGlobals(Config, Emulator);
@@ -3741,6 +3745,7 @@ namespace BizHawk.Client.EmuHawk
 		// Still needs a good bit of refactoring
 		private bool LoadRomInternal(string path, LoadRomArgs args, out bool failureIsFromAskSave)
 		{
+			HotSwap = null;
 			failureIsFromAskSave = false;
 			if (path == null)
 				throw new ArgumentNullException(nameof(path));
@@ -3897,7 +3902,7 @@ namespace BizHawk.Client.EmuHawk
 						{
 							Game.Name = nes.GameName;
 						}
-
+						HotSwap = nes;
 						Game.Status = nes.RomStatus;
 					}
 					else if (loader.LoadedEmulator is QuickNES qns)
@@ -3945,7 +3950,7 @@ namespace BizHawk.Client.EmuHawk
 						}
 					}
 
-					Tools.Restart(Config, Emulator, Game);
+					Tools.Restart(Config, Emulator, Game, HotSwap);
 
 					if (Config.Cheats.LoadFileByGame && Emulator.HasMemoryDomains())
 					{
@@ -3995,7 +4000,7 @@ namespace BizHawk.Client.EmuHawk
 				else if (Emulator.IsNull())
 				{
 					// This shows up if there's a problem
-					Tools.Restart(Config, Emulator, Game);
+					Tools.Restart(Config, Emulator, Game, HotSwap);
 					ExtToolManager.BuildToolStrip();
 					OnRomChanged();
 					return false;
@@ -4122,8 +4127,9 @@ namespace BizHawk.Client.EmuHawk
 				Emulator.Dispose();
 				Emulator = new NullEmulator();
 				Game = GameInfo.NullInstance;
+				HotSwap = null;
 				CreateRewinder();
-				Tools.Restart(Config, Emulator, Game);
+				Tools.Restart(Config, Emulator, Game, HotSwap);
 				RewireSound();
 				ClearHolds();
 				DisplayManager.UpdateGlobals(Config, Emulator);

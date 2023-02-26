@@ -1,4 +1,6 @@
-﻿using BizHawk.Client.Common;
+﻿using System;
+using BizHawk.Client.Common;
+using BizHawk.Emulation.Common;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -34,6 +36,17 @@ namespace BizHawk.Client.EmuHawk
 			// If seeking to a frame before or at the end of the movie, use StartAtNearestFrameAndEmulate
 			// Otherwise, load the latest state (if not already there) and seek while recording.
 			WasRecording = CurrentTasMovie.IsRecording() || WasRecording;
+
+			string RomAtCurrentFrame = GetLoadedRomOnFrame(Emulator.Frame);
+			string RomAtTargetFrame = GetLoadedRomOnFrame(frame);
+
+			if (RomAtCurrentFrame != RomAtTargetFrame) // We need to hotswap the ROM before going to that frame
+			{
+				if (HotSwapper != null)
+				{
+					HotSwapper.HotSwap(RomAtTargetFrame);
+				}
+			}
 
 			if (frame <= CurrentTasMovie.InputLogLength)
 			{
@@ -112,5 +125,26 @@ namespace BizHawk.Client.EmuHawk
 				SetVisibleFrame();
 			}
 		}
+
+		public string GetLoadedRomOnFrame(int frame)
+		{
+			string rom = "";
+			int CheckFrame = frame-2;
+			while (CheckFrame > 0)
+			{
+				rom = CurrentTasMovie.GetInputState(CheckFrame).HotSwapFilePath;
+
+				if(rom != null && rom != "")
+				{
+					return rom;
+				}
+
+				CheckFrame--;
+			}
+			rom = MainForm.CurrentlyOpenRom.Remove(0, AppContext.BaseDirectory.Length);
+			return rom;
+
+		}
+
 	}
 }

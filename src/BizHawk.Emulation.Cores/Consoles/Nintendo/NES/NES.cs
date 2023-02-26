@@ -11,7 +11,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 {
 	[Core(CoreNames.NesHawk, "zeromus, natt, alyosha, adelikat")]
 	public partial class NES : IEmulator, ISaveRam, IDebuggable, IInputPollable, IRegionable, IVideoLogicalOffsets,
-		IBoardInfo, IRomInfo, ISettable<NES.NESSettings, NES.NESSyncSettings>, ICodeDataLogger
+		IBoardInfo, IRomInfo, ISettable<NES.NESSettings, NES.NESSyncSettings>, ICodeDataLogger, IHotSwap
 	{
 		[CoreConstructor(VSystemID.Raw.NES)]
 		public NES(CoreComm comm, GameInfo game, byte[] rom, NESSettings settings, NESSyncSettings syncSettings, bool subframe = false)

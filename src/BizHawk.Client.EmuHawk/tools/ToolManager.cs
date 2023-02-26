@@ -27,6 +27,7 @@ namespace BizHawk.Client.EmuHawk
 		private IEmulator _emulator;
 		private readonly IMovieSession _movieSession;
 		private IGameInfo _game;
+		private IHotSwap _hotSwap;
 
 		// TODO: merge ToolHelper code where logical
 		// For instance, add an IToolForm property called UsesCheats, so that a UpdateCheatRelatedTools() method can update all tools of this type
@@ -50,7 +51,8 @@ namespace BizHawk.Client.EmuHawk
 			InputManager inputManager,
 			IEmulator emulator,
 			IMovieSession movieSession,
-			IGameInfo game)
+			IGameInfo game,
+			IHotSwap hotSwap)
 		{
 			_owner = owner;
 			_config = config;
@@ -60,7 +62,8 @@ namespace BizHawk.Client.EmuHawk
 			_emulator = emulator;
 			_movieSession = movieSession;
 			_game = game;
-			ApiProvider = ApiManager.Restart(_emulator.ServiceProvider, _owner, _displayManager, _inputManager, _movieSession, this, _config, _emulator, _game);
+			_hotSwap = hotSwap;
+			ApiProvider = ApiManager.Restart(_emulator.ServiceProvider, _owner, _displayManager, _inputManager, _movieSession, this, _config, _emulator, _game, _hotSwap);
 		}
 
 		/// <summary>
@@ -573,12 +576,13 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		public void Restart(Config config, IEmulator emulator, IGameInfo game)
+		public void Restart(Config config, IEmulator emulator, IGameInfo game, IHotSwap hotSwap)
 		{
 			_config = config;
 			_emulator = emulator;
 			_game = game;
-			ApiProvider = ApiManager.Restart(_emulator.ServiceProvider, _owner, _displayManager, _inputManager, _movieSession, this, _config, _emulator, _game);
+			_hotSwap = hotSwap;
+			ApiProvider = ApiManager.Restart(_emulator.ServiceProvider, _owner, _displayManager, _inputManager, _movieSession, this, _config, _emulator, _game, _hotSwap);
 			// If Cheat tool is loaded, restarting will restart the list too anyway
 			if (!Has<Cheats>())
 			{
