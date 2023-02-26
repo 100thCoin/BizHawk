@@ -1444,21 +1444,31 @@ namespace BizHawk.Client.EmuHawk
 			{
 				return "";
 			}
-			if (result.EndsWith(".nes")) // find extension of current ROM
+			string fileTypeOfLoadedRom = Path.GetExtension(MainForm.CurrentlyOpenRom);
+
+			if (result.StartsWith(AppContext.BaseDirectory))
 			{
-				if (result.StartsWith(AppContext.BaseDirectory))
-				{
-					result = result.Remove(0,AppContext.BaseDirectory.Length);
-				}
-
-				return result; 
+				result = result.Remove(0, AppContext.BaseDirectory.Length);
 			}
-
-			DialogController.ShowMessageBox(
-				caption: "ROM load error",
+			else
+			{
+				DialogController.ShowMessageBox(
+				caption: "File load error",
 				icon: EMsgBoxIcon.Error,
-				text: "This is not a ROM of the same type as the current ROM!");
-			return "";
+				text: "The file must be located inside the bizhawk folder in order to sync!");
+				return "";
+			}
+			if (!result.EndsWith(fileTypeOfLoadedRom))
+			{
+				DialogController.ShowMessageBox(
+				caption: "File load error",
+				icon: EMsgBoxIcon.Error,
+				text: "This is not a file of the same type as the current ROM!");
+				return "";				
+			}
+			return result;
+
+
 		}
 
 	}

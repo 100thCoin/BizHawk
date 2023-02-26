@@ -618,6 +618,7 @@ namespace BizHawk.Client.EmuHawk
 					{ 
 						string FilePath = LoadHotSwapPath();
 						CurrentTasMovie.SetHotSwapFilePath(frame, FilePath);
+						GoToFrame(frame, false, false, false);
 						RefreshDialog();
 					}	
 				}
