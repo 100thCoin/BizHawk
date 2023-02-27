@@ -614,7 +614,7 @@ namespace BizHawk.Client.EmuHawk
 				else if (TasView.CurrentCell.Column.Name == "HotSwap")
 				{
 
-					if (CurrentTasMovie.BoolIsPressed(frame, "Reset"))
+					if (frame < CurrentTasMovie.FrameCount && CurrentTasMovie.BoolIsPressed(frame, "Reset"))
 					{ 
 						string FilePath = LoadHotSwapPath();
 						CurrentTasMovie.SetHotSwapFilePath(frame, FilePath);
