@@ -288,16 +288,23 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			// swapping cartridges without clearing memory
 
 			var file = new HawkFile(filePath, false, false);
-			if(!file.Exists)
+			if(file.Exists)
 			{
-				// uh oh!
-			}
-			
-			byte[] rom = file.ReadAllBytes();
+				byte[] rom = file.ReadAllBytes();
 
-			hotSwapping = true;
-			Init(null, rom, null);
-			hotSwapping = false;
+				hotSwapping = true;
+				Init(null, rom, null);
+				hotSwapping = false;
+			}
+			else
+			{
+				// trying to swap to a ROM that doesn't exist?
+				// backup plan- don't do that.
+				hotSwapping = false;
+
+			}
+
+
 		}
 
 		public long CycleCount => ppu.TotalCycles;
@@ -1177,6 +1184,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				uint flags = (uint)(MemoryCallbackFlags.CPUZero | MemoryCallbackFlags.AccessWrite | MemoryCallbackFlags.SizeByte);
 				MemoryCallbacks.CallMemoryCallbacks(addr, value, flags, "System Bus");
 			}
+
+			DB = value;
 		}
 
 		// the palette for each VS game needs to be chosen explicitly since there are 6 different ones.
