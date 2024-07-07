@@ -14,5 +14,7 @@ namespace BizHawk.Client.Common
 		void Set(string button, bool? state = null, int? controller = null);
 		void SetAnalog(IReadOnlyDictionary<string, int?> controls, int? controller = null);
 		void SetAnalog(string control, int? value = null, int? controller = null);
+		string GetHotSwapFilePath();
+
 	}
 }

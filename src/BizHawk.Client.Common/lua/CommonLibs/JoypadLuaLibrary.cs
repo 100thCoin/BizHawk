@@ -56,5 +56,11 @@ namespace BizHawk.Client.Common
 			}
 			APIs.Joypad.SetAnalog(dict, controller);
 		}
+
+		[LuaMethodExample("local hotswapfilepath = joypad.gethotswapfilepath( );")]
+		[LuaMethod("gethotswapfilepath", "returns a string containing the file path of the loaded ROM")]
+		public string GetHotSwapFilePath()
+			=> (APIs.Joypad.GetHotSwapFilePath());
+
 	}
 }

@@ -166,7 +166,7 @@ namespace BizHawk.Client.EmuHawk
 	
 		}
 
-		void CheckForHotSwap(int frame)
+		public void CheckForHotSwap(int frame)
 		{
 			string RomAtCurrentFrame = GetLoadedRomOnFrame(Emulator.Frame);
 			string RomAtCurrentFrameMinus1 = GetLoadedRomOnFrame(Emulator.Frame - 2);

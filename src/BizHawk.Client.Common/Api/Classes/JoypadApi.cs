@@ -105,5 +105,11 @@ namespace BizHawk.Client.Common
 				// ignored
 			}
 		}
+
+		public string GetHotSwapFilePath()
+		{
+			return _inputManager.ControllerOutput.HotSwapFilePath;
+		}
+
 	}
 }
