@@ -292,8 +292,17 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			{
 				byte[] rom = file.ReadAllBytes();
 
+				// FDS disk images cannot be loaded without the BIOS
+				byte[] fdsbios = null;
+				if (rom.Length >= 4
+					&& (rom.Take(4).SequenceEqual(System.Text.Encoding.ASCII.GetBytes("FDS\x1A"))
+						|| rom.Take(4).SequenceEqual(System.Text.Encoding.ASCII.GetBytes("\x01*NI"))))
+				{
+					fdsbios = hotSwapFdsBios;
+				}
+
 				hotSwapping = true;
-				Init(null, rom, null);
+				Init(null, rom, fdsbios);
 				hotSwapping = false;
 			}
 			else
@@ -318,6 +327,8 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 		private bool resetSignal;
 		private bool hardResetSignal;
 		private bool hotSwapping;
+
+		public byte[] hotSwapFdsBios;
 
 		public bool FrameAdvance(IController controller, bool render, bool rendersound)
 		{
