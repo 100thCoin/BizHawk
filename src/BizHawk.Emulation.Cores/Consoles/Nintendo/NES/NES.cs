@@ -20,6 +20,7 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 			ServiceProvider = ser;
 
 			var fdsBios = comm.CoreFileProvider.GetFirmware(new("NES", "Bios_FDS"));
+
 			if (fdsBios != null && fdsBios.Length == 40976)
 			{
 				comm.ShowMessage("Your FDS BIOS is a bad dump.  BizHawk will attempt to use it, but no guarantees!  You should find a new one.");
@@ -27,6 +28,9 @@ namespace BizHawk.Emulation.Cores.Nintendo.NES
 				Buffer.BlockCopy(fdsBios, 16 + 8192 * 3, tmp, 0, 8192);
 				fdsBios = tmp;
 			}
+
+
+			hotSwapFdsBios = fdsBios;
 
 			SyncSettings = (NESSyncSettings)syncSettings ?? new NESSyncSettings();
 			ControllerSettings = SyncSettings.Controls;
